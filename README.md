@@ -17,15 +17,18 @@ https://www.bilibili.com/video/BV1ab4y1z7vs/
 
 ### 嗨~&&情话&&藏头诗
 
-<img src="https://ai-studio-static-online.cdn.bcebos.com/ecd247575af9489f83248d2eee320246b9d5da87682c4a01944c1cbfbb7bd2ca" alt="image-20210703150848118" style="zoom: 50%;" />
+
+
+<img src="https://user-images.githubusercontent.com/61859193/128604877-2675d640-68b5-4d05-ae26-34f2b290e506.jpg" alt="image-20210703150848118" style="zoom: 50%;" />
 
 ### 口红
 
-<img src="https://ai-studio-static-online.cdn.bcebos.com/574dcefae4ca4eee8663c02add4084cdcf5a30bf789147cf88baa801c3e6240b" alt="image-20210703150848118" style="zoom: 50%;" />
+
+<img src="https://user-images.githubusercontent.com/61859193/128604911-2a64f1a1-c356-464e-a342-e4608c647d82.jpg" alt="image-20210703150848118" style="zoom: 50%;" />
 
 ### 孤寡大礼包
 
-<img src="https://ai-studio-static-online.cdn.bcebos.com/ea03c91f39034ec3aac92e87a1432f0868735ce678b44882981e7e95ee0c2be5" alt="image-20210703150848118" style="zoom: 50%;" />
+<img src="https://user-images.githubusercontent.com/61859193/128604913-251df2f1-b96b-4f68-8aee-0b2c1d3695c3.jpg" alt="image-20210703150848118" style="zoom: 50%;" />
 
 
 
@@ -194,3 +197,6 @@ return lablelist[np.argmax(ceshi.numpy())]  # 获取值
 
 最后感谢主办方的机会和精良的活动～～～
 
+AI Studio地址：https://aistudio.baidu.com/aistudio/projectdetail/2263052
+
+CSDN地址：https://blog.csdn.net/weixin_45623093/article/details/119484889
