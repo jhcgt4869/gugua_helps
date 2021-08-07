@@ -1,5 +1,6 @@
 import os
 import asyncio
+
 import paddle
 import paddlehub as hub
 from wechaty import (
@@ -12,8 +13,10 @@ from wechaty import (
 from PIL import Image
 import paddle.nn
 import numpy as np
+from paddle.vision.models import resnet101
+import time
 
-os.environ['WECHATY_PUPPET_SERVICE_TOKEN'] = 'puppet_padlocal_xxxxxx'
+os.environ['WECHATY_PUPPET_SERVICE_TOKEN'] = 'puppet_padlocal_xxx'
 
 # reply自动回复话术合集
 reply = [
@@ -22,7 +25,9 @@ reply = [
 1、很直很直的表白藏头诗— —回复[藏头诗]参与
 2、“骚话语录”小助手教你说情话— —回复[情话]参与
 3、女友死亡问答“我的口红是什么……”之口红种类识别— —回复[口红]参与
-回复[帮助]即可获得小助手教学指南~~~''',
+回复[帮助]即可获得小助手教学指南~~~
+
+好消息！好消息！小助手给单身狗们准备了七夕大礼包！！！回复[大礼包]领取！''',
     '欢迎使用~七夕藏头诗板块\n直接回复你要的藏的内容即可~~~\n格式如下：1+回复内容\n例如：回复“我喜欢你”就输入1我喜欢你\n（目前支持4-8个字如果超'
     '出会自动截断）',
     '哈喽！欢迎你找到宝藏内容，请开一个开头，小助手教你说情话~~~\n格式如下：2+回复内容\n例如：回复“我喜欢你”就输入2我喜欢你',
@@ -30,8 +35,7 @@ reply = [
     把女友口红照片发给小助手,小助手帮你识别女友的口红类型！\n回复— —[口红品牌]对目前支持查询的口红品牌进行查看\n回复— —[口红明细]查看具体的口红''']
 
 helptxt = '''博客地址：https://blog.csdn.net/weixin_45623093/article/details/119484889
-AI Stduio地址：https://aistudio.baidu.com/aistudio/projectdetail/2263052
-B站（哔哩哔哩）地址：'''
+AI Stduio地址：https://aistudio.baidu.com/aistudio/projectdetail/2263052'''
 
 khdata1 = '''古驰倾色柔纱润唇膏
 古驰倾色丝润唇膏
@@ -129,8 +133,9 @@ class MyBot(Wechaty):
             await talker.say(helptxt)
 
         if msg.text()[0] == "1":
-            await talker.say('已经收到你的心意，正在生产"藏头诗"~~~')
-            await talker.say(cst(msg.text()[1:]))
+            await talker.say('已经收到你的心意' + msg.text()[1:] + '，正在生产"藏头诗"~~~')
+            print(msg.text()[1:])
+            await talker.say(cts(msg.text()[1:]))
 
         if msg.text()[0] == "2":
             await talker.say('稍等片刻，小助手马上教你说"情话"~~~')
@@ -140,7 +145,7 @@ class MyBot(Wechaty):
             await talker.say(khdata1)
 
         if msg.text() == "口红品牌":
-            await  talker.say(khdata2)
+            await talker.say(khdata2)
 
         if msg.type() == Message.Type.MESSAGE_TYPE_IMAGE:
             await talker.say('已收到图像，开始验证')
@@ -153,36 +158,65 @@ class MyBot(Wechaty):
 
             # 将图片保存为本地文件
             await file_box_user_image.to_file(file_path=img_path)
+            await talker.say(kh(img_path))
 
+        if msg.text() == "大礼包":
+            await talker.say("孤寡~孤寡~孤寡~")
+            time.sleep(3)
+            await talker.say("祝你七夕孤寡~~~")
+            time.sleep(4)
+            await talker.say("你孤寡我孤寡大家一起孤寡寡\n下面是小助手送你的孤寡礼物！")
+            time.sleep(3)
+            for i in range(3):
+                await talker.say("孤寡  孤寡  孤寡  "*50)
+                time.sleep(2)
+            await talker.say("七夕节快乐~~~狗粮管够~~~")
 
 
 def cts(data):
     long = len(data)
+
     if long <= 4:
         long = 4
     else:
         long = 8
+    print(long)
     module = hub.Module(name="ernie_gen_acrostic_poetry", line=long, word=7)
 
-    results = module.generate(texts=data, use_gpu=True, beam_width=1)
+    results = module.generate(texts=[data], use_gpu=True, beam_width=1)
     for result in results:
+        print(results)
         return result[0]
 
 
 def qh(data):
     module = hub.Module(name="ernie_gen_lover_words")
-    results = module.generate(texts=data, use_gpu=True, beam_width=1)
+    results = module.generate(texts=[data], use_gpu=True, beam_width=1)
     for result in results:
         return result[0]
 
 
 def kh(path):
+    lablelist = {0: '古驰倾色柔纱润唇膏', 1: '古驰倾色丝润唇膏', 2: '古驰倾色琉光唇膏', 3: '古驰倾色华缎唇膏', 4: '古驰倾色绒雾唇膏',
+                 5: '古驰倾色星辉唇膏', 6: '爱马仕唇妆系列缎光唇膏', 7: '阿玛尼红管臻致丝传奇绒哑光唇釉', 8: '阿玛尼红黑管哑光唇膏',
+                 9: '阿玛尼小胖丁持色凝彩哑光染唇液', 10: '阿玛尼5G黑管', 11: '阿玛尼黑漆光迷情唇釉', 12: '迪奥烈艳蓝金唇膏',
+                 13: 'Dior红管花芯唇膏', 14: 'Dior迪奥魅惑釉唇膏', 15: '烈艳蓝金锁色唇釉', 16: '圣罗兰纯口红',
+                 17: '圣罗兰细管纯口红（小金条）', 18: '圣罗兰莹亮纯魅唇膏', 19: '圣罗兰细管纯口红（小黑条）', 20: '娇兰臻彩宝石唇膏',
+                 21: '娇兰亲亲唇膏', 22: '娇兰唇蜜', 23: 'CHILI 小辣椒', 24: '魅可清新漆光唇釉', 25: '完美日记小细跟口红', 26: '完美日记唇彩',
+                 27: '完美日记口红', 28: '兰蔻唇釉', 29: '兰蔻唇膏', 30: '娇韵诗丰盈唇膏', 31: '香奈儿可可小姐唇膏',
+                 32: 'CL路铂廷女王权杖（萝卜丁口红）', 33: 'CL路铂廷女王权杖黑管（萝卜丁口红）', 34: '纪梵希小羊皮', 35: '纪梵希羊皮唇釉',
+                 36: '纪梵希禁忌之吻星云唇膏', 37: '3CE细管唇膏', 38: '3CE哑光口红', 39: '3CE唇泥', 40: '3CE三熹玉云朵唇釉',
+                 41: 'UNNY唇泥', 42: 'UNNY雾面雪雾花园唇釉', 43: '植村秀小黑方唇膏口红', 44: '植村秀无色限方管漆光唇釉口红',
+                 45: 'TOM FORD唇膏', 46: '雅诗兰黛口红金管', 47: '橘朵哑光唇釉', 48: '橘朵小花管唇膏', 49: '稚优泉口红',
+                 50: '稚优泉无惧幻想绒雾唇釉', 51: '稚优泉琉光之镜水光唇釉', 52: '稚优泉 绒情迷雾哑光唇釉'}
+
     img = Image.open(path)  # 打开图片
+    img = img.convert('RGB')
     img = img.resize((100, 100), Image.ANTIALIAS)  # 大小归一化
     img = np.array(img).astype('float32')  # 转换成 数组
     img = img.transpose((2, 0, 1))  # 读出来的图像是rgb,rgb,rbg..., 转置为 rrr...,ggg...,bbb...
     img = img / 255.0  # 缩放
-    model_state_dict = paddle.load('./data/resnet101.pdparams')  # 读取模型
+    model_state_dict = paddle.load('./resnet101.pdparams')  # 读取模型
     model = resnet101()  # 实例化模型
     model.set_state_dict(model_state_dict)
     model.eval()
@@ -190,7 +224,6 @@ def kh(path):
     # print(paddle.to_tensor(img).shape)
     ceshi = model(paddle.reshape(paddle.to_tensor(img), (1, 3, 100, 100)))  # 测试
     return lablelist[np.argmax(ceshi.numpy())]  # 获取值
-
 
 
 async def main():
