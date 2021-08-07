@@ -13,7 +13,7 @@ from PIL import Image
 import paddle.nn
 import numpy as np
 
-os.environ['WECHATY_PUPPET_SERVICE_TOKEN'] = 'puppet_padlocal_0d64a920980d4f308dadd6ed58f42405'
+os.environ['WECHATY_PUPPET_SERVICE_TOKEN'] = 'puppet_padlocal_xxxxxx'
 
 # reply自动回复话术合集
 reply = [
