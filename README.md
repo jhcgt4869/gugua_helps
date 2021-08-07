@@ -11,9 +11,7 @@
 
 ## 查看机器人使用指南
 
-
-
-<iframe style="width:80%;height: 600px;"src="//player.bilibili.com/player.html?aid=632151779&bvid=BV1ab4y1z7vs&cid=384415312&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+https://www.bilibili.com/video/BV1ab4y1z7vs/
 
 ## 内容查看
 
